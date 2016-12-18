@@ -26,7 +26,6 @@ struct Text
 char* InText(char buff[], int & size)
 {
 	char ch = ' ';
-	char delims[] = " ,";
 	int i=0;
 
 	while(ch!=26) // пока не введено ctrl+z
@@ -81,7 +80,9 @@ Sentence GetSentence(char* token)
 		i++;
 	}
 	s.size = i;
+	
 	return s;
+	delete s.words;
 }
 
 Text GetText(char buff[], int &buffsize)
@@ -117,14 +118,5 @@ int main() {
 	cout<<"Tsize"<<T.size<<endl;
 	cout<<"sensize"<<T.sentence[0].size<<endl;
 
-	for(int i = 0; i<T.size; i++)
-	{
-		for (int j = 0; j<T.sentence[i].size; j++)
-		{
-			cout<<T.sentence[i].words[j].symb;
-		}
-	}
-
-	return 0;
-
+	system("pause");
 }

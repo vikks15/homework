@@ -1,4 +1,4 @@
-#include <iostream>
+ï»¿#include <iostream>
 #include <conio.h>
 #include <string.h>
 
@@ -29,18 +29,18 @@ char* InText(char buff[], int & size)
 	char delims[] = " ,";
 	int i=0;
 
-	while(ch!=26) // ïîêà íå ââåäåíî ctrl+z
+	while(ch!=26) // Ð¿Ð¾ÐºÐ° Ð½Ðµ Ð²Ð²ÐµÐ´ÐµÐ½Ð¾ ctrl+z
 	{
 		ch = _getch();
 
-		if(ch>='A' && ch<='Z' || ch>='a' && ch<='z' || ch==' ' || ch=='.') //ââîä òîëüêî ëàòèíñêèõ áóêâ
+		if(ch>='A' && ch<='Z' || ch>='a' && ch<='z' || ch==' ' || ch=='.') //Ð²Ð²Ð¾Ð´ Ñ‚Ð¾Ð»ÑŒÐºÐ¾ Ð»Ð°Ñ‚Ð¸Ð½ÑÐºÐ¸Ñ… Ð±ÑƒÐºÐ²
 		{
 			cout<<ch;
 			buff[i]=ch;
 			i++;
 			size++;
 		}
-		else if(ch=='\b') // óäàëåíèå ñèìâîëà èç êîíñîëè è áóôåðà
+		else if(ch=='\b') // ÑƒÐ´Ð°Ð»ÐµÐ½Ð¸Ðµ ÑÐ¸Ð¼Ð²Ð¾Ð»Ð° Ð¸Ð· ÐºÐ¾Ð½ÑÐ¾Ð»Ð¸ Ð¸ Ð±ÑƒÑ„ÐµÑ€Ð°
 		{
 			cout<<"\b \b"; 
 			i--;
@@ -49,6 +49,8 @@ char* InText(char buff[], int & size)
 		else if(ch!=26) cout<<"\a"; //bell
 
 	}
+
+	buff[i]='\0'; // Ð¾ÐºÐ¾Ð½Ñ‡Ð°Ð½Ð¸Ðµ Ð²Ð²Ð¾Ð´Ð° Ñ‚ÐµÐºÑÑ‚Ð°
 
 	return buff;
 }
@@ -73,10 +75,10 @@ Sentence GetSentence(char* token)
 	while(sen!=NULL)
 	{
 
-	sen = strtok_s(nexttoken," ",&nexttoken);
-	if(sen==NULL) break;
-	s.words[i] = GetWords(sen);
-	i++;
+		sen = strtok_s(nexttoken," ",&nexttoken);
+		if(sen==NULL) break;
+		s.words[i] = GetWords(sen);
+		i++;
 	}
 	s.size = i;
 	return s;
@@ -94,13 +96,13 @@ Text GetText(char buff[], int &buffsize)
 
 	while(token!=NULL)
 	{
-	token = strtok_s(nexttoken,".",&nexttoken);
-	if(token==NULL) break;
-	t.sentence[i] = GetSentence(token);
-	i++;
+		token = strtok_s(nexttoken,".",&nexttoken);
+		if(token==NULL) break;
+		t.sentence[i] = GetSentence(token);
+		i++;
 	}
 	t.size=i;
-	
+
 	return t;
 }
 
@@ -113,16 +115,16 @@ int main() {
 	Text T = GetText(buff,buffsize);
 	cout<<endl<<"buffsize"<<buffsize<<endl;
 	cout<<"Tsize"<<T.size<<endl;
+	cout<<"sensize"<<T.sentence[0].size<<endl;
 
 	for(int i = 0; i<T.size; i++)
 	{
-		cout<<T.sentence[i].words[i].symb;
+		for (int j = 0; j<T.sentence[i].size; j++)
+		{
+			cout<<T.sentence[i].words[j].symb;
+		}
 	}
 
-	cout<<endl<<buffsize;
-
-	/*for(int i =0; i<size; i++){
-	cout<<buff[i];
-	*/
+	return 0;
 
 }

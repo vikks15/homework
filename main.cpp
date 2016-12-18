@@ -14,7 +14,6 @@ struct Sentence
 {
 	Word *words;
 	int size;
-
 };
 
 struct Text
@@ -23,7 +22,7 @@ struct Text
 	int size;
 };
 
-char* InText(char buff[], int & size)
+char* InText(char *buff)
 {
 	char ch = ' ';
 	int i=0;
@@ -32,18 +31,20 @@ char* InText(char buff[], int & size)
 	{
 		ch = _getch();
 
-		if(ch>='A' && ch<='Z' || ch>='a' && ch<='z' || ch==' ' || ch=='.') //ввод только латинских букв
+		bool isLowerLatin = ch >= 'a' && ch <= 'z';
+		bool isUpperLatin = ch >= 'A' && ch <= 'Z';
+		bool isBreakPoint = ch == ' ' || ch == '.' || ch == ',';
+
+		if (isLowerLatin || isUpperLatin || isBreakPoint)
 		{
-			cout<<ch;
+			cout << ch;
 			buff[i]=ch;
 			i++;
-			size++;
 		}
 		else if(ch=='\b') // удаление символа из консоли и буфера
 		{
 			cout<<"\b \b"; 
 			i--;
-			size--;
 		}
 		else if(ch!=26) cout<<"\a"; //bell
 
@@ -61,63 +62,64 @@ Word GetWords(char *tok)
 	return w;
 }
 
-Sentence GetSentence(char* token)
+Sentence GetSentence(char* buff)
 {
 	Sentence s;
-	s.words = new Word[];
 
 	int i = 0, kol = 0;
 
-	char *nexttoken = token;
-	char *sen=" ";
+	char *nexttoken, *token = buff;
+	const char delims[] = " ";
 
-	while(sen!=NULL)
+	// TODO: Init for s.size
+
+	s.words = new Word[s.size];
+
+	token = strtok_s(token, delims, &nexttoken);
+	while(token != NULL)
 	{
-
-		sen = strtok_s(nexttoken," ",&nexttoken);
-		if(sen==NULL) break;
-		s.words[i] = GetWords(sen);
+		s.words[i] = GetWords(token);
 		i++;
+		token = strtok_s(NULL, delims, &nexttoken);
 	}
 	s.size = i;
 	
 	return s;
-	delete s.words;
 }
 
-Text GetText(char buff[], int &buffsize)
+Text GetText(char *buff)
 {
 
 	Text t;
-	InText(buff, buffsize);
+	InText(buff);
 	int i = 0;
 
 	char *nexttoken, *token = buff;
-	const char delim[] = ".";
-	t.sentence = new Sentence[]; 
+	const char delims[] = ".";
 
-	token = strtok_s(token, delim, &nexttoken);
-	while(token!=NULL)
+	// TODO: Init for t.size
+
+	t.sentence = new Sentence[t.size]; 
+
+	token = strtok_s(token, delims, &nexttoken);
+	while(token != NULL)
 	{
 		t.sentence[i] = GetSentence(token);
 		i++;
-		token = strtok_s(NULL, delim, &nexttoken);
+		token = strtok_s(NULL, delims, &nexttoken);
 	}
-	t.size=i;
+	t.size = i;
 
 	return t;
 }
 
 
-int main() {
-
-	int buffsize=0;
-	char buff[1000];
-
-	Text T = GetText(buff,buffsize);
-	cout<<endl<<"buffsize"<<buffsize<<endl;
-	cout<<"Tsize"<<T.size<<endl;
-	cout<<"sensize"<<T.sentence[0].size<<endl;
-
+int main() 
+{
+	char *buff = new char[1024];
+	Text T = GetText(buff);
+	cout << "\nTsize " << T.size << endl;
+	cout << "sensize " << T.sentence[0].size << endl;
 	system("pause");
+	delete [] buff;
 }

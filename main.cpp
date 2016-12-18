@@ -92,15 +92,16 @@ Text GetText(char buff[], int &buffsize)
 	InText(buff, buffsize);
 	int i = 0;
 
-	char *nexttoken=buff, *token = " ";
+	char *nexttoken, *token = buff;
+	const char delim[] = ".";
 	t.sentence = new Sentence[]; 
 
+	token = strtok_s(token, delim, &nexttoken);
 	while(token!=NULL)
 	{
-		token = strtok_s(nexttoken,".",&nexttoken);
-		if(token==NULL) break;
 		t.sentence[i] = GetSentence(token);
 		i++;
+		token = strtok_s(NULL, delim, &nexttoken);
 	}
 	t.size=i;
 

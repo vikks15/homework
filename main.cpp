@@ -71,7 +71,8 @@ Sentence GetSentence(char* buff)
 	char *nexttoken, *token = buff;
 	const char delims[] = " ";
 
-	// TODO: Init for s.size
+	s.size=1;
+	for(int i=0; i<strlen(buff); i++) if(buff[i]==' ') s.size++;
 
 	s.words = new Word[s.size];
 
@@ -82,7 +83,6 @@ Sentence GetSentence(char* buff)
 		i++;
 		token = strtok_s(NULL, delims, &nexttoken);
 	}
-	s.size = i;
 	
 	return s;
 }
@@ -97,7 +97,8 @@ Text GetText(char *buff)
 	char *nexttoken, *token = buff;
 	const char delims[] = ".";
 
-	// TODO: Init for t.size
+	t.size=0;
+	for(int i=0; i<strlen(buff); i++) if(buff[i]=='.') t.size++;
 
 	t.sentence = new Sentence[t.size]; 
 
@@ -108,7 +109,6 @@ Text GetText(char *buff)
 		i++;
 		token = strtok_s(NULL, delims, &nexttoken);
 	}
-	t.size = i;
 
 	return t;
 }

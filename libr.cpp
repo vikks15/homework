@@ -1,4 +1,4 @@
-#ifndef libr
+п»ї#ifndef libr
 #define libr
 
 #include <iostream>
@@ -10,9 +10,9 @@ using namespace std;
 int menu()
 {
 	int a;
-	cout<<"1 - Ввод текста"<<endl;
-	cout<<"2 - Выполнение варианта"<<endl;
-	cout<<"3 - Выход"<<endl;
+	cout<<"1 - Р’РІРѕРґ С‚РµРєСЃС‚Р°"<<endl;
+	cout<<"2 - Р’С‹РїРѕР»РЅРµРЅРёРµ РІР°СЂРёР°РЅС‚Р°"<<endl;
+	cout<<"3 - Р’С‹С…РѕРґ"<<endl;
 
 	cin>>a;
 	cin.clear();
@@ -22,7 +22,7 @@ int menu()
 struct Word
 {
 	char *symb;
-	bool flag; //для удаления слов
+	bool flag; //РґР»СЏ СѓРґР°Р»РµРЅРёСЏ СЃР»РѕРІ
 };
 
 struct Sentence
@@ -36,24 +36,24 @@ struct Text
 	Sentence *sentence;
 	int size;
 
-	//перегрузка <<
+	//РїРµСЂРµРіСЂСѓР·РєР° <<
 	friend void operator<<(ostream &os, Text &t)
 	{
 		int kol=0;
 		for(int i = 0; i<t.size; i++)
 		{
-			cout<<"Предложение "<<i<<": ";
+			cout<<"РџСЂРµРґР»РѕР¶РµРЅРёРµ "<<i<<": ";
 			for(int j=0; j<t.sentence[i].size; j++)
 			{
 				kol++;
-				if(t.sentence[i].words[j].flag==true) //для var12
+				if(t.sentence[i].words[j].flag==true) //РґР»СЏ var12
 				{
 					cout<<t.sentence[i].words[j].symb;
-					if((j+1)!=t.sentence[i].size) cout<<" "; //вывод пробела между словами
+					if((j+1)!=t.sentence[i].size) cout<<" "; //РІС‹РІРѕРґ РїСЂРѕР±РµР»Р° РјРµР¶РґСѓ СЃР»РѕРІР°РјРё
 				}				
 			}
 
-			cout<<'.'<<" Слов: "<<t.sentence[i].size<<endl;
+			cout<<'.'<<" РЎР»РѕРІ: "<<t.sentence[i].size<<endl;
 		}
 	}
 };
@@ -63,7 +63,7 @@ char* InText(char *buff)
 	char ch = ' ';
 	int i=0;
 
-	while(ch!=26) // пока не введено ctrl+z
+	while(ch!=26) // РїРѕРєР° РЅРµ РІРІРµРґРµРЅРѕ ctrl+z
 	{
 		ch = _getch();
 
@@ -77,7 +77,7 @@ char* InText(char *buff)
 			buff[i]=ch;
 			i++;
 		}
-		else if(ch=='\b') // удаление символа из консоли и буфера
+		else if(ch=='\b') // СѓРґР°Р»РµРЅРёРµ СЃРёРјРІРѕР»Р° РёР· РєРѕРЅСЃРѕР»Рё Рё Р±СѓС„РµСЂР°
 		{
 			cout<<"\b \b"; 
 			i--;
@@ -86,7 +86,7 @@ char* InText(char *buff)
 
 	}
 
-	buff[i]='\0'; // окончание ввода текста
+	buff[i]='\0'; // РѕРєРѕРЅС‡Р°РЅРёРµ РІРІРѕРґР° С‚РµРєСЃС‚Р°
 
 	return buff;
 }
@@ -109,12 +109,12 @@ Sentence GetSentence(char* buff)
 	const char delims[] = " ";
 
 	s.size=1;
-	for(int i=1; i<strlen(buff); i++) // определение количества слов по пробелам
+	for(int i=1; i<strlen(buff); i++) // РѕРїСЂРµРґРµР»РµРЅРёРµ РєРѕР»РёС‡РµСЃС‚РІР° СЃР»РѕРІ РїРѕ РїСЂРѕР±РµР»Р°Рј
 	{
 		if(buff[i]==' ' && buff[i-1]!=' ') s.size++;
 	}
 
-	s.words = new Word[s.size];//выделение памяти под массив слов
+	s.words = new Word[s.size];//РІС‹РґРµР»РµРЅРёРµ РїР°РјСЏС‚Рё РїРѕРґ РјР°СЃСЃРёРІ СЃР»РѕРІ
 
 	token = strtok_s(token, delims, &nexttoken);
 	while(token != NULL)
@@ -131,20 +131,20 @@ Text GetText(char *buff)
 {
 
 	Text t;
-	InText(buff); //считавание символов, проверка правильности ввода
+	InText(buff); //СЃС‡РёС‚Р°РІР°РЅРёРµ СЃРёРјРІРѕР»РѕРІ, РїСЂРѕРІРµСЂРєР° РїСЂР°РІРёР»СЊРЅРѕСЃС‚Рё РІРІРѕРґР°
 	int i = 0;
 
 	char *nexttoken, *token = buff;
 	const char delims[] = ".";
 
 	t.size=0;
-	for(int i=0; i<strlen(buff); i++) //определение количества предложений в тексте
+	for(int i=0; i<strlen(buff); i++) //РѕРїСЂРµРґРµР»РµРЅРёРµ РєРѕР»РёС‡РµСЃС‚РІР° РїСЂРµРґР»РѕР¶РµРЅРёР№ РІ С‚РµРєСЃС‚Рµ
 	{
 		if(buff[i]=='.')
 			t.size++;
 	}
 
-	t.sentence = new Sentence[t.size]; //выделение памяти под массив предложений
+	t.sentence = new Sentence[t.size]; //РІС‹РґРµР»РµРЅРёРµ РїР°РјСЏС‚Рё РїРѕРґ РјР°СЃСЃРёРІ РїСЂРµРґР»РѕР¶РµРЅРёР№
 	token = strtok_s(token, delims, &nexttoken);
 
 	while(token != NULL)
@@ -157,7 +157,7 @@ Text GetText(char *buff)
 	return t;
 }
 
-void var12(Text &t) //Вариант 12
+void var12(Text &t) //Р’Р°СЂРёР°РЅС‚ 12
 {
 	int maxlen = 0, word1len = 0, word2len = 0, j = 0;
 

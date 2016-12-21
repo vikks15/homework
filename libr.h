@@ -1,4 +1,4 @@
-#ifndef libr
+ï»¿#ifndef libr
 #define libr
 
 #include <iostream>
@@ -26,7 +26,7 @@ struct Text
 	Sentence *sentence;
 	int size;
 
-	friend void operator<<(ostream &os, Text &t); //ïåðåãðóçêà <<
+	friend void operator<<(ostream &os, Text &t); //Ð¿ÐµÑ€ÐµÐ³Ñ€ÑƒÐ·ÐºÐ° <<
 	
 };
 

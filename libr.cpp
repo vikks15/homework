@@ -23,6 +23,7 @@ struct Word
 {
 	char *symb;
 	bool flag; //для удаления слов
+	
 };
 
 struct Sentence
@@ -39,21 +40,23 @@ struct Text
 	//перегрузка <<
 	friend void operator<<(ostream &os, Text &t)
 	{
-		int kol=0;
+		int kol = 0;
 		for(int i = 0; i<t.size; i++)
 		{
 			cout<<"Предложение "<<i<<": ";
 			for(int j=0; j<t.sentence[i].size; j++)
 			{
-				kol++;
+				
 				if(t.sentence[i].words[j].flag==true) //для var12
 				{
 					cout<<t.sentence[i].words[j].symb;
-					if((j+1)!=t.sentence[i].size) cout<<" "; //вывод пробела между словами
-				}				
+					if((j+1)!=t.sentence[i].size) cout<<" "; //вывод пробелов между словами
+				}
+				else kol++;
 			}
 
-			cout<<'.'<<" Слов: "<<t.sentence[i].size<<endl;
+			cout<<'.'<<" Слов: "<<(t.sentence[i].size-kol)<<endl; //kol - количество удаленных слов
+			kol=0;
 		}
 	}
 };
@@ -159,29 +162,37 @@ Text GetText(char *buff)
 
 void var12(Text &t) //Вариант 12
 {
-	int maxlen = 0, word1len = 0, word2len = 0, j = 0;
+	int maxlen = 0, word1len = 0, word2len = 0;
 
 	for(int i = 0; i<t.size; i++)
 	{
 		Word last = t.sentence[i].words[(t.sentence[i].size)-1];
 		t.sentence[i].words[(t.sentence[i].size)-1].flag=false;
 
-		for(j = 0; j<(t.sentence[i].size)-2; j++)
+		for(int j = 0; j<(t.sentence[i].size)-1; j++)
 		{
 			word1len = strlen(t.sentence[i].words[j].symb);
-			word2len = strlen(t.sentence[i].words[j+1].symb);
-
-			if (t.sentence[i].words[j].symb[word1len-1] == ',') word1len--;
-			if (t.sentence[i].words[j+1].symb[word2len-1] == ',') word2len--;
-
+			if (t.sentence[i].words[j].symb[word1len-1] == ',')
+			{
+				//t.sentence[i].words[j].symb[word1len-1] = ' ';
+				word1len--;
+			}
 			if(word1len>maxlen && (strcmp(t.sentence[i].words[j].symb, last.symb))!=0) maxlen=word1len;
-
-			else if (word2len>maxlen && strcmp(t.sentence[i].words[j+1].symb, last.symb)!=0) maxlen=word2len;
+			
 		}
 
-		if(strcmp(t.sentence[i].words[j].symb, last.symb)==0 || strlen(t.sentence[i].words[j].symb)<maxlen) t.sentence[i].words[j].flag=false;
-		
+		for(int j = 0; j<(t.sentence[i].size)-1;j++)
+		{
+			if(strcmp(t.sentence[i].words[j].symb, last.symb)==0 || strlen(t.sentence[i].words[j].symb)<maxlen)
+			{
+				t.sentence[i].words[j].flag=false;
+				
+			}
+
+		}
+
 		maxlen=0;
+		t.sentence[i].size--;
 	}
 	cout<<t;
 }
